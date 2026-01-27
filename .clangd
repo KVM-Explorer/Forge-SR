@@ -1,0 +1,17 @@
+CompileFlags:
+  Add: [
+    "-std=c++23",
+    "-xc++",              # 强制将所有文件视为 C++
+    "-fmodules",          # 开启模块支持
+    "-fimplicit-modules", # 开启隐式模块扫描
+    "-fimplicit-module-maps"
+  ]
+
+Index:
+  Background: Build       # 允许 clangd 在后台索引
+
+# 告诉 clangd 将 .mpp 视为 C++ 源代码
+If:
+  PathMatch: .*\.mpp
+CompileFlags:
+  Add: [-x, c++-module]   # 将 mpp 识别为模块接口单元

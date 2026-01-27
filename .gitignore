@@ -39,3 +39,9 @@
 
 # debug information files
 *.dwo
+
+build/
+.vs/
+vsxmake2022/
+.xmake/
+.vscode/
