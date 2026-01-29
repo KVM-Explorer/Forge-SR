@@ -45,3 +45,7 @@ build/
 vsxmake2022/
 .xmake/
 .vscode/
+
+# Draw.io
+doc/*.bkp
+doc/*.dtmp

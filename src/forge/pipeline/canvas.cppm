@@ -1,12 +1,14 @@
+#include <cstdint>
 
 export module forge.pipeline.canvas;
 import std;
 
 export namespace forge::pipeline {
-    using Color = int;
+    using Color = uint32_t; // 使用 0xAARRGGBB 格式的颜色值 - BGRA8888
 
     class Canvas {
     public:
+
         Canvas(int width, int height) 
             : width_(width), height_(height), data_(width * height, 0xFF000000) {
             // 创建一个 2D 视图：[行, 列]
@@ -27,6 +29,6 @@ export namespace forge::pipeline {
         int width_, height_;
         std::vector<Color> data_;
         // mdspan 成员：动态维度
-        std::mdspan<Color, std::dextents<size_t, 2>> view_;
+        std::mdspan<uint32_t, std::dextents<size_t, 2>> view_;
     };
 }

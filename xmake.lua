@@ -7,6 +7,7 @@ set_languages("c++23")
 
 -- 添加依赖模块
 add_requires("libsdl3")
+add_cxflags("/utf-8")
 
 -- 编译规则：添加所有模块文件
 target("forge_core")
@@ -22,5 +23,10 @@ target("ForgeApp")
     set_kind("binary")
     add_deps("forge_core")
     add_files("src/main.cpp")
+
+target("01hello-triangle")
+    set_kind("binary")
+    add_deps("forge_core")
+    add_files("src/app/01hello-triangle/**.cpp")
 
 includes("tests/**.lua")
