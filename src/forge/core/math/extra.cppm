@@ -1,6 +1,7 @@
 export module forge.core.math:extra;
 
 import :vector;
+import :matrix;
 export namespace forge { 
 
     // 重心插值
@@ -22,4 +23,7 @@ export namespace forge {
     Vector3 reflect(const Vector3& i, const Vector3& n) {
         return i - 2.0f * dot(i, n) * n;
     }    
+
+    // MVP 矩阵计算
+    
 }
