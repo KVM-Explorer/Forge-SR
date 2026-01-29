@@ -19,14 +19,23 @@ target("forge_core")
     add_files("src/forge/**.cpp")
     add_packages("libsdl3",{public=true})
 
-target("ForgeApp")
-    set_kind("binary")
-    add_deps("forge_core")
-    add_files("src/main.cpp")
 
-target("01hello-triangle")
+
+local except_list = {".","..","02hello-window"}
+
+target("02hello-window")
     set_kind("binary")
-    add_deps("forge_core")
-    add_files("src/app/01hello-triangle/**.cpp")
+    add_files("src/sample/02hello-window/sdl_test.cpp")
+    add_packages("libsdl3")
+
+
+for _, name in ipairs(os.dirs("./sample")) do
+    if not table.iscontains(except_list, name) then
+        target(name)
+            set_kind("binary")
+            add_deps("forge_core")
+            add_files("sample/"..name.."/**")
+    end
+end
 
 includes("tests/**.lua")

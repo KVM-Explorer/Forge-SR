@@ -1,3 +1,4 @@
+module;
 #include "SDL3/SDL.h" 
 
 export module forge.platform.window;
@@ -16,9 +17,10 @@ class Window {
     SDL_Renderer *renderer_ = nullptr;
     Window(std::string title, int width, int height) : width_(width), height_(height) {
 
-        if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        if (SDL_Init(SDL_INIT_VIDEO) == false) {
             forge::log_error("Failed to initialize SDL");
             // forge::log_error("Failed to initialize SDL: {}", SDL_GetError());
+            return;
         }
         window_ = SDL_CreateWindow(title.c_str(), width, height, SDL_WINDOW_RESIZABLE);
         if(!window_){
