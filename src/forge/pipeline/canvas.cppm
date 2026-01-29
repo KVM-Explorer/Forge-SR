@@ -1,3 +1,4 @@
+module;
 #include <cstdint>
 
 export module forge.pipeline.canvas;

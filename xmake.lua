@@ -23,19 +23,22 @@ target("forge_core")
 
 local except_list = {".","..","02hello-window"}
 
-target("02hello-window")
-    set_kind("binary")
-    add_files("src/sample/02hello-window/sdl_test.cpp")
-    add_packages("libsdl3")
-
-
-for _, name in ipairs(os.dirs("./sample")) do
-    if not table.iscontains(except_list, name) then
-        target(name)
+-- print("Scanning sample projects..." )
+-- 为 sample 目录下的每个子目录创建一个 target
+for _, name in ipairs(os.dirs("sample/*")) do
+    -- 获取目录名
+    local folder_name = path.basename(name)
+    if not table.contains(except_list, folder_name) then
+        target(folder_name)
             set_kind("binary")
             add_deps("forge_core")
-            add_files("sample/"..name.."/**")
+            add_files(path.join(name,"**.cpp"))
     end
 end
+
+target("02hello-window")
+    set_kind("binary")
+    add_files("sample/02hello-window/sdl_test.cpp")
+    add_packages("libsdl3")
 
 includes("tests/**.lua")
