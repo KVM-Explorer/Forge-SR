@@ -1,5 +1,7 @@
 module;
 
+
+
 export module forge.pipeline:vertex;
 import : assembly;
 
@@ -36,10 +38,14 @@ public:
     ShaderProgam program;
 };
 
-class VertexStage : public StageBase {
+export class VertexStage : public StageBase {
 public:
     VertexStage(RawLayout in, RawLayout out);
     void bind(StageBase::ShaderProgam program);
+    
+    size_t customSize(){
+        return output_layout.stride();
+    }
 };
 
 class FragmentStage: public StageBase{

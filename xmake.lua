@@ -4,6 +4,8 @@ set_version("0.1.0")
 
 -- 强制使用 C++20/23 标准
 set_languages("c++23")
+set_policy("package.requires_lock", true)
+
 
 -- 添加依赖模块
 add_requires("libsdl3")

@@ -23,6 +23,11 @@ export namespace forge::pipeline {
                 view_[y, x] = color;
             }
         }
+        
+        void set_pixel(int x,int y,Color color,float depth)
+        {
+            
+        }
 
         const Color* raw_data() const { return data_.data(); }
 
