@@ -12,7 +12,7 @@ import forge.core.math;
 export namespace forge::pipeline {
 enum class Format { Float2 = 8, Float3 = 12, Float4 = 16 };
 
-enum class Semantic { Position, Normal, Color, UV, Tangent, Bitangent, MaxCount };
+enum class Semantic { Position, Normal, Color, UV, Tangent, Bitangent,SV_Position,Custom, MaxCount };
 
 // 输入元素描述，当前默认所有数据vec4存储对齐
 const uint32_t DefaultElementSize = 16;
@@ -22,11 +22,11 @@ struct InputElement {
     uint32_t offset;
 };
 
-class InputLayout {
+class RawLayout {
     std::vector<InputElement> m_elements;
 
   public:
-    InputLayout(std::vector<InputElement> elements) : m_elements(elements) {
+    RawLayout(std::vector<InputElement> elements) : m_elements(elements) {
         int offset = 0;
         for (auto &element : m_elements) {
             element.offset = offset;
@@ -50,13 +50,13 @@ class InputLayout {
 
 struct AttributeView {
     std::span<const std::byte> attributes;
-    const InputLayout &layout;
+    const RawLayout &layout;
 
     // 读取属性数据 auto x = AV.view<Vector3>(Semantic::Position);
     template <typename T> T view(Semantic semantic) {
         uint32_t offset = layout.offset(semantic);
         if (offset == -1) {
-            forge::log_error("InputLayout: semantic not found");
+            forge::log_error("RawLayout: semantic not found");
         }
 
         return *reinterpret_cast<T *>(attributes.data() + offset);
@@ -66,12 +66,16 @@ struct AttributeView {
 // 聚合数据，将所有的属性数据聚合在一起，方便数据访问
 class PipelineData {
   public:
-    InputLayout input_layout;
-    std::span<const std::byte> data_view;
+    RawLayout input_layout;
+    std::span<std::byte> data_view;
     std::vector<std::byte> raw_data;
-    PipelineData(const InputLayout &layout, std::vector<std::byte> &&data) : input_layout(layout), raw_data(std::move(data)) {
+    PipelineData(const RawLayout &layout, std::vector<std::byte> &&data) : input_layout(layout), raw_data(std::move(data)) {
         // 必须在 raw_data 移动完成后再创建 span，否则 span 指向的是旧的/空的内存
-        data_view = std::span<const std::byte>(raw_data);
+        data_view = std::span<std::byte>(raw_data);
+    }
+
+    uint32_t count() {
+        return data_view.size() / input_layout.stride();
     }
 
     AttributeView fetch(uint32_t index) const {
@@ -85,16 +89,19 @@ class PipelineData {
 
         return AttributeView{.attributes = slice, .layout = input_layout};
     }
+
+    std::span<std::byte> data() { return data_view; }
+    
 };
 
 template <typename T> 
     class PipelineDataBuilder {
-    InputLayout m_layout;
+    RawLayout m_layout;
     std::function<const void *(const T &, Semantic)> getter;
     std::span<const T> attributes;
 
   public:
-    PipelineDataBuilder(const InputLayout &layout) : m_layout(layout) {}
+    PipelineDataBuilder(const RawLayout &layout) : m_layout(layout) {}
 
     void put(std::vector<T> &attr) { attributes = attr; }
 

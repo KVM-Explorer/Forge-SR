@@ -8,6 +8,7 @@ export namespace forge {
         float y;
 
         Vector2(float x, float y) : x(x), y(y) {}
+        Vector2() : x(0), y(0) {}
     };
 
     class Vector3 {
@@ -17,6 +18,7 @@ export namespace forge {
         float z;
 
         Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
+        Vector3() : x(0), y(0), z(0){}
     };
 
     class Vector4 {
@@ -27,7 +29,7 @@ export namespace forge {
         float w;
 
         Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
-
+        Vector4() : x(0), y(0), z(0), w(0) {};
         //随机访问 xyzw 分量 行如xyz zxy wxyz
     };
 }
