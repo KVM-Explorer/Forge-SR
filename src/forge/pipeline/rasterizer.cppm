@@ -2,8 +2,8 @@ module;
 
 export module forge.pipeline:rasterizer;
 
-class Rasterizer {
+export class Rasterizer {
   public:
 
-
+  void execute();
 };

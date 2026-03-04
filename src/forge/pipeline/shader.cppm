@@ -1,7 +1,6 @@
 module;
 
 
-
 export module forge.pipeline:vertex;
 import : assembly;
 
@@ -52,6 +51,19 @@ class FragmentStage: public StageBase{
 public:
     FragmentStage(RawLayout in, RawLayout out);
     void bind(StageBase::ShaderProgam program);
+};
+
+
+
+
+
+
+class TransformStage{
+    public: 
+    void execute(std::span<std::byte> in,std::span<std::byte> out)
+    {
+        
+    }
 };
 
 }

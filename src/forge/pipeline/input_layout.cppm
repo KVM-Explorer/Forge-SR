@@ -12,7 +12,8 @@ import forge.core.math;
 export namespace forge::pipeline {
 enum class Format { Float2 = 8, Float3 = 12, Float4 = 16 };
 
-enum class Semantic { Position, Normal, Color, UV, Tangent, Bitangent,SV_Position,Custom, MaxCount };
+enum class Semantic { Position,
+    Normal, Color, UV, Tangent, Bitangent,SV_Position,Custom,SV_ID,SV_Lerp ,MaxCount };
 
 // 输入元素描述，当前默认所有数据vec4存储对齐
 const uint32_t DefaultElementSize = 16;
